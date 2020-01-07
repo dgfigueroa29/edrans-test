@@ -1,0 +1,22 @@
+{
+  "app": {
+    "port": "3000",
+    "version": "1",
+    "trace": "API_EDRANDS",
+    "debug": true
+  },
+  "databases": [
+    {
+      "host": "localhost:27017",
+      "collection": "careers"
+    },
+    {
+      "host": "localhost:27017",
+      "collection": "students"
+    },
+    {
+      "host": "localhost:27017",
+      "collection": "subjects"
+    }
+  ]
+}
