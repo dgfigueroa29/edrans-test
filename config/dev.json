@@ -5,18 +5,12 @@
     "trace": "API_EDRANDS",
     "debug": true
   },
-  "databases": [
-    {
-      "host": "localhost:27017",
-      "collection": "careers"
-    },
-    {
-      "host": "localhost:27017",
-      "collection": "students"
-    },
-    {
-      "host": "localhost:27017",
-      "collection": "subjects"
-    }
-  ]
+  "database": {
+    "host": "localhost:27017/edrans",
+    "collections": [
+      "careers",
+      "students",
+      "subjects"
+    ]
+  }
 }
