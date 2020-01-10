@@ -24,7 +24,6 @@
     "fastest-validator": "^1.0.0",
     "http-errors": "^1.7.3",
     "lodash": "^4.17.15",
-    "log": "^6.0.0",
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.5",
     "util": "^0.12.1",

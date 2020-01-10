@@ -1,7 +1,5 @@
 'use strict';
 const express = require('express'),
-    Log = require('log'),
-    log = new Log(),
     app = express(),
     router = express.Router(),
     jsonParser = require('body-parser').json({limit: '50mb', defer: true}),
@@ -28,7 +26,7 @@ mongoose.connect('mongodb://' + config.database.host, {useNewUrlParser: true, us
         //Error handling:
         const errorHandler = (err, req, res) => {
             console.log(err);
-            log.info('Handler: ' + util.inspect(err, {showHidden: true, compact: true, depth: 5, breakLength: 80}));
+            console.log('Handler: ' + util.inspect(err, {showHidden: true, compact: true, depth: 5, breakLength: 80}));
             res.status(500).send({
                 error: util.inspect(err, {
                     showHidden: true,
@@ -43,9 +41,9 @@ mongoose.connect('mongodb://' + config.database.host, {useNewUrlParser: true, us
 
         //Start the server:
         app.listen(port);
-        log.info('API::' + port);
+        console.log('API::' + port);
     })
     .catch(err => {
         console.log(err);
-        log.info('Catch: ' + util.inspect(err, {showHidden: true, compact: true, depth: 5, breakLength: 80}));
+        console.log('Catch: ' + util.inspect(err, {showHidden: true, compact: true, depth: 5, breakLength: 80}));
     });
