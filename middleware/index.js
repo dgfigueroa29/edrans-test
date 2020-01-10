@@ -1,6 +1,8 @@
 'use strict';
-const FasterValidator = require('fastest-validator'),
-    validator = new FasterValidator(),
+const lodash = require('lodash'),
+    validator = require('validator'),
+    FasterValidator = require('fastest-validator'),
+    fasterValidator = new FasterValidator(),
     schema = {
         'name': {type: 'string', min: 2}
     };
@@ -21,18 +23,30 @@ const createCareer = (req, res, next) => {
 };
 
 const register = (req, res, next) => {
-    const schema = {
+    const schemaRegister = {
         'name': {type: 'string', min: 2},
         'title': {type: 'string', min: 2}
     };
-    process(req, res, next, schema);
+    process(req, res, next, schemaRegister);
+};
+
+const checkId = (req, res, next) => {
+    if (!lodash.isUndefined(req.params.id)) {
+        if (validator.isMongoId(req.params.id)) {
+            next();
+        } else {
+            res.status(400).send({"error": "Missing or invalid id"});
+        }
+    } else {
+        res.status(400).send({"error": "Missing or invalid id"});
+    }
 };
 
 const process = (req, res, next, schema) => {
-    if (validator.validate(req.body, schema) === true) {
+    if (fasterValidator.validate(req.body, schema) === true) {
         next();
     } else {
-        res.status(400).send(validator.validate(req.body, schema));
+        res.status(400).send(fasterValidator.validate(req.body, schema));
     }
 };
 
@@ -41,7 +55,8 @@ const moduleConstructor = () => {
         createStudent: createStudent,
         createCareer: createCareer,
         createSubject: createSubject,
-        register: register
+        register: register,
+        checkId: checkId
     };
 };
 
