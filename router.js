@@ -7,19 +7,19 @@ function router(router) {
         subject = require('./route/subject')();
 
     //GET routes:
-    router.route('/students/').get(student.getAll);
+    router.route('/students').get(student.getAll);
     router.route('/students/:id').get(middleware.checkId, student.getById);
 
-    router.route('/careers/').get(career.getAll);
+    router.route('/careers').get(career.getAll);
     router.route('/careers/:id').get(middleware.checkId, career.getById);
 
-    router.route('/subjects/').get(subject.getAll);
+    router.route('/subjects').get(subject.getAll);
     router.route('/subjects/:id').get(middleware.checkId, subject.getById);
 
     //POST routes:
-    router.route('/students/').post(middleware.createStudent, student.create);
-    router.route('/careers/').post(middleware.createCareer, career.create);
-    router.route('/subjects/').post(middleware.createSubject, subject.create);
+    router.route('/students').post(middleware.createStudent, student.create);
+    router.route('/careers').post(middleware.createCareer, career.create);
+    router.route('/subjects').post(middleware.createSubject, subject.create);
 
     //PUT routes:
     router.route('/students/:id').put(middleware.checkId, middleware.createStudent, student.create);

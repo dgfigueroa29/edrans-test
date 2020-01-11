@@ -2,7 +2,7 @@
 const express = require('express'),
     app = express(),
     router = express.Router(),
-    jsonParser = require('body-parser').json({limit: '50mb', defer: true}),
+    bodyParser = require('body-parser'),
     util = require('util'),
     config = require('./config'),
     mongoose = require('mongoose'),
@@ -14,7 +14,8 @@ mongoose.connect('mongodb://' + config.database.host, {useNewUrlParser: true, us
     .then(() => {
         require('./router')(router);
 
-        app.use(jsonParser);
+        app.use(bodyParser.urlencoded({extended: false}));
+        app.use(bodyParser.json());
         app.all('*', function (req, res, next) {
             res.header('Access-Control-Allow-Origin', req.headers.origin);
             res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -22,28 +23,13 @@ mongoose.connect('mongodb://' + config.database.host, {useNewUrlParser: true, us
         });
 
         app.use(prefix, router);
-
-        //Error handling:
-        const errorHandler = (err, req, res) => {
-            console.log(err);
-            console.log('Handler: ' + util.inspect(err, {showHidden: true, compact: true, depth: 5, breakLength: 80}));
-            res.status(500).send({
-                error: util.inspect(err, {
-                    showHidden: true,
-                    compact: true,
-                    depth: 5,
-                    breakLength: 80
-                })
-            });
-        };
-
-        app.use(errorHandler);
-
-        //Start the server:
+        app.use((error, req, res, next) => {
+            console.log('Handler Message: ' + error.stack);
+            res.status(500).send({'error': error.stack});
+        });
         app.listen(port);
-        console.log('API::' + port);
+        console.log('http://edrans-test.test::' + port + prefix);
     })
-    .catch(err => {
-        console.log(err);
-        console.log('Catch: ' + util.inspect(err, {showHidden: true, compact: true, depth: 5, breakLength: 80}));
+    .catch(error => {
+        console.log('Catch: ' + util.inspect(error, {showHidden: true, compact: true, depth: 1, breakLength: 20}));
     });
